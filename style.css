@@ -2,7 +2,7 @@
     --font-snake: 'VT323', monospace;
     --color-snake-dark: #414141;
     --color-inner-board: #C4CFA3;
-    --color-first-border: #8B966C:
+    --color-first-border: #8B966C;
 }
 
 *,
@@ -39,21 +39,25 @@ body, .snake {
 }
 
 .game-border-1 {
-    border: #595F43 solid 10px;
+    border-color: #595F43; 
+    border-width: 10px;
+    border-style: solid;
     border-radius: 30px;
     box-shadow: inset 0 0 0 10px #595F43;
 }
 
 .game-border-2 {
-    border: #ABB78A solid 8px;
+    border-color: #ABB78A;
+    border-width: 8px;
+    border-style: solid;
     border-radius: 25px;
     box-shadow: inset 0 0 0 10px #ABB78A;
 }
 
 .game-border-3 {
-    border: #8B966C solid 30px;
-    //border-width: 30px;
-    //border_style: solid;
+    border-color: var(--color-first-border);
+    border-width: 30px;
+    border-style: solid;
     border-radius: 20px;
     box-shadow: inset 0 0 0 5px #8B966C;
 }
