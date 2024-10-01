@@ -1,8 +1,17 @@
+// Capure DOM Elements
 const board = document.querySelector(".game-board");
+const instructionText = document.getElementById("instruction-text");
+const logo = document.getElementById("logo");
+const score = document.querySelector("#score");
+const highScore = document.querySelector("#high-score");
+
 const gridWidth = 20, gridHeight = 20;
 let snakePosition = [{ x: 10, y: 10}];
 let food = generateFood();
 let direction = "right";
+let gameInterval;
+let gameSpeedDelay = 200;
+let gameStarted = false;
 
 const draw = () => {
     board.innerHTML = "";
@@ -29,8 +38,6 @@ const setPosition = (snakeElement, positionSnakeElement) => {
     snakeElement.style.gridColumn = positionSnakeElement.x;
     snakeElement.style.gridRow = positionSnakeElement.y;
 } 
-
-draw();
 
 //Draw Food in Board
 function drawFood() {
@@ -78,11 +85,74 @@ const move = () => {
     const snakeHead = { ...snakePosition[0] };
     const newHead = moveActions[direction](snakeHead);
     snakePosition.unshift(newHead);
-    snakePosition.pop();
+    const xSnakeFood = newHead.x === food.x;
+    const ySnakeFood = newHead.y === food.y;
+    if (xSnakeFood && ySnakeFood) {
+        food = generateFood();
+        increaseSpeed();
+        clearInterval(gameInterval);
+        gameInterval = setInterval(() => {
+            move();
+            draw();
+        }, gameSpeedDelay);
+    } else {
+        snakePosition.pop();
+    }
 }
 
-setInterval(() => {
-    move();
-    draw();
-}, 200)
+const speedTable = {
+    "150": 5,
+    "100": 3,
+    "50": 2,
+    "25": 1
+}
+
+const increaseSpeed = () => {
+    const speedArray = Object.keys(speedTable);
+    const speedArrayNum = speedArray.map((element) => {
+        return Number(element);
+    }).sort((a, b) => b - a)
+    for (const speedThreshold of speedArrayNum) {
+        const numSpeedThreshold = typeof speedThreshold === "number" ? speedThreshold : Number(speedThreshold);
+        if (gameSpeedDelay > numSpeedThreshold) {
+            gameSpeedDelay -= speedTable[speedThreshold];
+            console.log("Speed Increased.New Speed" + String(gameSpeedDelay));
+            return;
+        }
+    }
+}
+
+function startGame() {
+    gameStarted = true;
+    instructionText.style.display = "none";
+    logo.style.display = "none";
+    gameInterval = setInterval(() => {
+        move();
+        //checkCollision();
+        draw();
+    }, gameSpeedDelay);
+}
+
+const keyDirection = {
+    "ArrowUp": "up",
+    "ArrowDown": "down",
+    "ArrowLeft": "left",
+    "ArrowRight": "right"
+}
+
+//Event Listener Spacebar Start Game
+document.addEventListener("keydown", (e) => {
+    handleKeyPress(e);
+});
+
+function handleKeyPress(event) {
+    const isSpaceBar = event.code === "Space" || event.key === " ";
+    if (!gameStarted && isSpaceBar) {
+        startGame();
+    } else {
+        direction = keyDirection[event.key]; 
+    }
+}
+
+
 
