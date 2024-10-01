@@ -24,7 +24,7 @@ body {
 }
 
 body, .snake {
-    background-color: var(--color-snake-dark)
+    background-color: var(--color-snake-dark);
 }
 
 .game-board {
@@ -59,7 +59,7 @@ body, .snake {
     border-width: 30px;
     border-style: solid;
     border-radius: 20px;
-    box-shadow: inset 0 0 0 5px #8B966C;
+    box-shadow: inset 0 0 0 5px var(--color-first-border);
 }
 
 #instruction-text {
@@ -70,6 +70,11 @@ body, .snake {
     text-align: center;
     text-transform: capitalize;
     padding: 30px;
+}
+
+.scores {
+    display: flex;
+    justify-content: space-between;
 }
 
 #score {
@@ -85,10 +90,11 @@ body, .snake {
 
 #high-score {
     color: #D8DDCA;
+    display: none;
 }
 
 .game-border-3, #logo {
-    background-color: var(--color-inner-board)
+    background-color: var(--color-inner-board);
 }
 
 .snake {
