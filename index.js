@@ -39,7 +39,7 @@ const createGameElement = (tagElement, classname) => {
 const setPosition = (snakeElement, positionSnakeElement) => {
     snakeElement.style.gridColumn = positionSnakeElement.x;
     snakeElement.style.gridRow = positionSnakeElement.y;
-} 
+}; 
 
 //Draw Food in Board
 function drawFood() {
@@ -47,14 +47,14 @@ function drawFood() {
     const foodElement = createGameElement("div", "food");
     setPosition(foodElement, food);
     board.appendChild(foodElement);
-}
+};
 
 // Generate random coordinates
 function generateFood() {
     const foodX = Math.floor(Math.random() * gridWidth) + 1;
     const foodY = Math.floor(Math.random() * gridHeight) + 1;
     return { x: foodX, y: foodY };
-}
+};
 
 const moveActions = {
     "up": (head) => {
@@ -81,7 +81,7 @@ const moveActions = {
             y: head.y
         };
     }
-}
+};
 
 //Move Functionality
 const move = () => {
@@ -102,14 +102,14 @@ const move = () => {
     } else {
         snakePosition.pop();
     }
-}
+};
 
 const speedTable = {
     "150": 5,
     "100": 3,
     "50": 2,
     "25": 1
-}
+};
 
 const increaseSpeed = () => {
     const speedArray = Object.keys(speedTable);
@@ -124,12 +124,12 @@ const increaseSpeed = () => {
             return;
         }
     }
-}
+};
 
 const updateScore = () => {
     const currentScore = snakePosition.length - 1;
     score.textContent = currentScore.toString().padStart(3, "0");    
-}
+};
 
 const updateHighScore = () => {
     const currentScore = snakePosition.length - 1;
@@ -138,14 +138,14 @@ const updateHighScore = () => {
         highScoreText.textContent = highScore.toString().padStart(3, '0');
     }
     highScoreText.style.display = "block";
-}
+};
 
 const stopGame = () => {
     clearInterval(gameInterval);
     gameStarted = false;
     instructionText.style.display = "block";
     logo.style.display = "block";
-}
+};
 
 const resetGame = () => {
     updateHighScore();
@@ -155,7 +155,7 @@ const resetGame = () => {
     direction = "right";
     gameSpeedDelay = 200;
     updateScore();
-}
+};
 
 const checkCollision = () => {
     const snakeHead = snakePosition[0];
@@ -176,7 +176,7 @@ const checkCollision = () => {
             resetGame();
         }
     }
-}
+};
 
 function startGame() {
     gameStarted = true;
@@ -187,14 +187,14 @@ function startGame() {
         checkCollision();
         draw();
     }, gameSpeedDelay);
-}
+};
 
 const keyDirection = {
     "ArrowUp": "up",
     "ArrowDown": "down",
     "ArrowLeft": "left",
     "ArrowRight": "right"
-}
+};
 
 //Event Listener Spacebar Start Game
 document.addEventListener("keydown", (e) => {
@@ -205,10 +205,14 @@ function handleKeyPress(event) {
     const isSpaceBar = event.code === "Space" || event.key === " ";
     if (!gameStarted && isSpaceBar) {
         startGame();
-    } else {
-        direction = keyDirection[event.key]; 
+        return;
     }
-}
+    const arrowKeys = Object.keys(keyDirection);
+    if (arrowKeys.includes(event.key)) {
+        direction = keyDirection[event.key];
+        return; 
+    }
+};
 
 
 
